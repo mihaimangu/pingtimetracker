@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  express-server:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "8000:8000"
+    env_file:
+      - node.env
+    depends_on:
+      - mongo-container
+    volumes: 
+      - ./src:/app/src
+
+  mongo-container:
+    image: "mongo:latest"
+    ports:
+      - "27017:27017"
+    command: mongod
+    volumes: 
+      - mongo-data:/data/db
+
+volumes:
+ mongo-data: 
