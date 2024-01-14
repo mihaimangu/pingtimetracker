@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  express-server:
+  pingtime-express-server:
     build:
       context: .
       dockerfile: Dockerfile.dev
@@ -10,11 +10,11 @@ services:
     env_file:
       - node.env
     depends_on:
-      - mongo-container
+      - pingtime-mongo-container
     volumes: 
       - ./src:/app/src
 
-  mongo-container:
+  pingtime-mongo-container:
     image: "mongo:latest"
     ports:
       - "27017:27017"
