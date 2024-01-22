@@ -12,7 +12,7 @@ mongoose.connect('mongodb://localhost:27017', {  useUnifiedTopology: true, dbNam
   console.log('Connected to MongoDB database');
 }).catch((err) => {
   console.error('Error connecting to MongoDB database', err);
-});;
+});
 
 const entitySchema = new mongoose.Schema({
   name: {type: String, default: ''},
@@ -36,6 +36,28 @@ app.get('/', (req: Request, res: Response) => {
 function getTimestampInSeconds () {
   return Math.floor(Date.now() / 1000)
 }
+
+app.get('/object', async (req: Request, res: Response) => {
+  const {id} = req.query;
+
+  console.log('getting entity details')
+
+  try {
+    if (!id) {
+      return res.status(400).json({ error: 'Entity ID is required.' });
+    }
+
+    const entity = await Entity.findOne({_id: id});
+    res.send({
+      message: "Got details for entity",
+      entity: entity,
+      totalPings: entity.history.length
+    })    
+
+  } catch (err){
+
+  }
+})
 
 app.post('/object', async (req: Request, res: Response) => {
   const name = req.body?.name
