@@ -17,7 +17,7 @@ mongoose.connect('mongodb://localhost:27017', {  useUnifiedTopology: true, dbNam
 const entitySchema = new mongoose.Schema({
   name: {type: String, default: ''},
   description: {type: String, default: ''},
-  history: [{type: Number}]
+  history: [{type: Number, select: false}]
 })
 
 const Entity = mongoose.model('Entity', entitySchema);
@@ -37,26 +37,44 @@ function getTimestampInSeconds () {
   return Math.floor(Date.now() / 1000)
 }
 
-app.get('/object', async (req: Request, res: Response) => {
-  const {id} = req.query;
+app.get('/objects/:id', async (req: Request, res: Response) => {
+  const {id} = req.params;
 
-  console.log('getting entity details')
+  console.log('Request Id:', req.params.id);
 
   try {
     if (!id) {
       return res.status(400).json({ error: 'Entity ID is required.' });
     }
 
-    const entity = await Entity.findOne({_id: id});
+    const entity = await Entity.findOne({_id: id}, {history: 1});
     res.send({
       message: "Got details for entity",
       entity: entity,
-      totalPings: entity.history.length
+      totalPings: entity.history.length ?? 0
     })    
 
   } catch (err){
 
   }
+})
+app.get('/objects', async (req: Request, res: Response) => {
+  console.log('grabbing all objects');
+  
+  try {
+    const entities = await Entity.find({});
+
+    res.send({
+      message:"Here are all the objects",
+      entities
+    })
+  } catch (err){
+    res.send({
+      message: "Having issues finding all entities"
+    })
+  }
+
+
 })
 
 app.post('/object', async (req: Request, res: Response) => {
@@ -82,6 +100,8 @@ app.post('/object', async (req: Request, res: Response) => {
 })
 
 app.get('/ping', async (req: Request, res: Response) => {
+  // doing GET requests instead of POST/PUT, to be able to communicate even with the most basic devices 
+
   const {id} = req.query;
 
   console.log('sending ping', id)
