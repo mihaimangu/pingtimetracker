@@ -54,7 +54,7 @@ app.get('/objects/:id', async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Entity ID is required.' });
     }
 
-    const entity = await Entity.findOne({_id: id}, {history: 1});
+    const entity = await Entity.findOne({_id: id}, {history: 1, name: 1, description: 1});
     res.send({
       message: "Got details for entity",
       entity: entity,

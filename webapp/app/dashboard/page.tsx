@@ -13,12 +13,7 @@ import Chart from './Chart';
 import { describe } from 'node:test';
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-
-interface Tracker {
-    name: String;
-    description: String;
-    _id: String;
-}
+import {Tracker} from '../types';
 
 function Copyright(props: any) {
     return (
