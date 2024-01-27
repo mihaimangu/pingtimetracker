@@ -1,6 +1,9 @@
 import psutil
 import time
 from datetime import datetime
+import requests
+
+url = "http://localhost:8000/ping?id=65a95e0ffac8808217455372"
 
 def get_active_window_title():
     try:
@@ -40,7 +43,7 @@ def track_game_time(game_name):
 
                 if new_time % 60 == 0:
                     print(f"A new minute has passed")
-
+                    response = requests.get(url)
 
 
                 if start_time is None:
