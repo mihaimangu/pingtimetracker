@@ -3,6 +3,9 @@ import express, { Express, Request, Response , Application } from 'express';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import mongoose, { ConnectOptions } from 'mongoose';
+import cors from 'cors';
+
+const allowedDomain = 'http://localhost:3000'
 
 //For env File 
 dotenv.config();
@@ -24,6 +27,10 @@ const Entity = mongoose.model('Entity', entitySchema);
 
 const app: Application = express();
 const port = process.env.PORT || 8000;
+
+app.use(cors({
+  origin: allowedDomain,
+}));
  
 // Middleware for parsing JSON requests
 app.use(bodyParser.json());
