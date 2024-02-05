@@ -3,6 +3,7 @@ import { AppBar, Toolbar, Typography, Box } from '@mui/material';
 import react from 'react';
 
 import styles from './header.module.css';
+import Link from 'next/link';
 
 const Header = () => {
     return (
@@ -11,9 +12,11 @@ const Header = () => {
                 <Typography variant="h6" color="inherit" noWrap>
                     <Box className={styles.box}>
                         <AccessTime />
-                        <Typography variant="h6">
-                            Ping Time Tracker
-                        </Typography>
+                        <Link href="/dashboard">
+                            <Typography variant="h6">
+                                Ping Time Tracker
+                            </Typography>
+                        </Link>
                     </Box>
                 </Typography>
             </Toolbar>
